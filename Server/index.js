@@ -7,10 +7,11 @@ const Schedule = require('./src/Models/Schedule')
 const Train = require('./src/Models/Train')
 const User = require('./src/Models/User')
 const bookingRouter = require('./src/Routers/bookingRouter')
+const userRouter = require('./src/Routers/userRouter')
 
 app.use(express.json());
 
-mongoose.connect('mongodb://127.0.0.1:27017/train').then(() => {
+mongoose.connect('mongodb+srv://Sowraj:sowrajadya.ai@trainticketbooking.t6admlm.mongodb.net/').then(() => {
   console.log('Connected to MongoDB');
 }).catch((err) => {
   console.error('Error connecting to MongoDB:', err.message);
@@ -22,6 +23,8 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/bookings', bookingRouter);
+app.use('/api/user', userRouter);
+
 app.listen(3000, () => {
   console.log("Server Deployed");
 });
