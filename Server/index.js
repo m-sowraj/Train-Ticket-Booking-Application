@@ -14,7 +14,7 @@ const scheduleRouter = require('./src/Routers/ScheduleRouter');
 app.use(express.json());
 app.use(cors()); 
 
-mongoose.connect('mongodb+srv://Sowraj:sowrajadya.ai@trainticketbooking.t6admlm.mongodb.net/').then(() => {
+mongoose.connect('mongodb+srv://Sowraj:sowrajadya.ai@trainticketbooking.t6admlm.mongodb.net/trainticketbooking').then(() => {
   console.log('Connected to MongoDB');
 }).catch((err) => {
   console.error('Error connecting to MongoDB:', err.message);
