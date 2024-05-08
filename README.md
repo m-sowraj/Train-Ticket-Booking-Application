@@ -8,7 +8,7 @@ The frontend application is hosted on Vercel. You can access it [here](https://t
 
 ## Backend API
 
-The backend API is hosted on Render. You can access it [here](https://train-ticket-booking-application-1.onrender.com/).
+The backend API is hosted on Render. You can access it [here](https://train-ticket-booking-application.onrender.com/).
 
 ## Getting Started
 
