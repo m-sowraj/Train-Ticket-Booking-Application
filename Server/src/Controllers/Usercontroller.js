@@ -11,11 +11,11 @@ const registerUser = async (req, res) => {
     const existingUserWithPhoneNumber = await User.findOne({ phoneNumber });
 
     if (existingUserWithEmail) {
-      return res.status(400).json({ error: 'Email is already registered' });
+      return res.status(220).json({ error: 'Email is already registered' });
     }
 
     if (existingUserWithPhoneNumber) {
-      return res.status(400).json({ error: 'Phone number is already registered' });
+      return res.status(221).json({ error: 'Phone number is already registered' });
     }
 
     
@@ -44,16 +44,17 @@ const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
 
- 
+    
     const user = await User.findOne({ email });
+    console.log(user , email)
     if (!user) {
-      return res.status(400).json({ error: 'Invalid credentials' });
+      return res.status(220).json({ error: 'Invalid credentials' });
     }
 
     
     const validPassword = await bcrypt.compare(password, user.password);
     if (!validPassword) {
-      return res.status(400).json({ error: 'Invalid credentials' });
+      return res.status(220).json({ error: 'Invalid credentials' });
     }
 
    

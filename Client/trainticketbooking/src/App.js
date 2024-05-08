@@ -1,23 +1,43 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Home from './screens/Home'
 import BookingScreen from './screens/bookticket';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import AuthModal from './components/Authmodal';
+import Modal from 'react-modal';
 
+Modal.setAppElement('#root');
 
 const App = () => {
-  
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+
+
+  useEffect(() => {
+    const authToken = localStorage.getItem('authToken');
+    if (authToken === null) {
+      openAuthModal();
+    } 
+  }, [isAuthModalOpen]); 
+
+  const openAuthModal = () => {
+    setIsAuthModalOpen(true);
+  };
+
+  const closeAuthModal = () => {
+    setIsAuthModalOpen(false);
+  };
+
   return (
     <div className="App" >
-      {/* <Header />
-      <Home />
-      <Footer /> */}
-      {/* <BookingScreen /> */}
-
       <Router>
-      <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/train/:id" element={<BookingScreen />} />
-      </Routes>
+        <AuthModal
+          isOpen={isAuthModalOpen}
+          onRequestClose={closeAuthModal}
+          onLoginSuccess={() => closeAuthModal }
+        />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/train/:id" element={<BookingScreen />} />
+        </Routes>
       </Router>
     </div>
   );

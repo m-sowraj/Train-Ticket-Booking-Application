@@ -112,14 +112,13 @@ const BookingScreen = () => {
   };
 
   const anyItemsAreNull = () => {
-    // Check if any of the items are null
+   
     return (
       startPlace === '' ||
       endPlace === '' ||
       selectedCompartment === '' ||
       totalAmount === 0 ||
-      // Add any other items you want to check for null
-      sampleData === null // Check sampleData as well if it should not be null
+      sampleData === null 
     );
   };
 
@@ -340,6 +339,20 @@ const styles = {
     justifySelf: 'center',
     alignSelf: 'center',
     marginTop:25,
+  },
+
+  loader: {
+    position: 'fixed',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    zIndex: 9999,
+    alignItems:'center',
+    justifyContent:'center',
+    textAlign: 'center',
+    color: '#fff',
+    fontSize: '20px',
+    padding: '20px',
   },
   rightcontainer:{
     backgroundColor: '#f3f4f6',

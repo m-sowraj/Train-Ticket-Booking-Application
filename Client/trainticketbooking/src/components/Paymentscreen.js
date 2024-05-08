@@ -8,7 +8,7 @@ const PaymentScreen = ({ isOpen, onRequestClose , sampleData , startPlace , endP
   const [CardName, setCardName] = useState('')
 
   const handlePayment = () => {
-    // Implement payment logic here
+    
     console.log('Payment processing...');
   };
 

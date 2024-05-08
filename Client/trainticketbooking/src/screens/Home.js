@@ -4,6 +4,7 @@ import Footer from '../components/Footer';
 import { dotStream } from 'ldrs'
 import { useNavigate } from 'react-router-dom';
 import api from '../api';
+import AuthModal from '../components/Authmodal';
 dotStream.register()
 
 const Home = () => {
@@ -189,7 +190,7 @@ const Home = () => {
    
         setFromStation(selectedFromStation);
     
-        // Find the schedules that have the selected "From" station as their source
+        
         const fromSchedules = sampleData.filter(schedule =>
             schedule.stops.some(stop => stop.station == selectedFromStation)
         );
@@ -276,7 +277,7 @@ const Home = () => {
               <>
                   <Header />
     <div style={styles.container}>
-
+    
       <h2 style={styles.heading}>Find the perfect train for your journey</h2>
       
       <div style={styles.searchContainer}>

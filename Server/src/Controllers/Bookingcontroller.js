@@ -5,7 +5,8 @@ const Schedule = require('../Models/Schedule');
 
 const bookTicket = async (req, res) => {
   try {
-    const { trainId, compartmentType, numSeats, startStation , endStation , userId , scheduleId } = req.body;
+    const { trainId, compartmentType, numSeats, startStation , endStation , scheduleId } = req.body;
+    const userId = req.userId;
 
  
     const train = await Train.findById(trainId);

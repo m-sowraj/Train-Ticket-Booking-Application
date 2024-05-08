@@ -4,8 +4,8 @@ const Header = () => {
   return (
     <div style={styles.container}>
       <h2 style={styles.heading}>TrainTickets</h2>
-           
-      <button style={styles.getStartedButton}>Login / Signup</button>
+{/*            
+      <button style={styles.getStartedButton}>Login / Signup</button> */}
     </div>
   );
 };
