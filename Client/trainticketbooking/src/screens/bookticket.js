@@ -2,7 +2,7 @@ import React, { useState ,useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import api from '../api';
 import PaymentScreen from '../components/Paymentscreen';
-import Header from '../components/Header';
+
 
 const BookingScreen = () => {
   const { id } = useParams();

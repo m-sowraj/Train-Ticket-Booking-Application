@@ -4,7 +4,6 @@ import Footer from '../components/Footer';
 import { dotStream } from 'ldrs'
 import { useNavigate } from 'react-router-dom';
 import api from '../api';
-import AuthModal from '../components/Authmodal';
 dotStream.register()
 
 const Home = () => {

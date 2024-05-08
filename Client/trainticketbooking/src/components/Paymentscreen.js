@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
+import { useNavigate } from 'react-router-dom';
+
 
 const PaymentScreen = ({ isOpen, onRequestClose , sampleData , startPlace , endPlace , selectedCompartment , totalAmount , numberOfTickets , seats}) => {
   const [cardNumber, setCardNumber] = useState('');
   const [expiryDate, setExpiryDate] = useState('');
   const [cvv, setCvv] = useState('');
   const [CardName, setCardName] = useState('')
-
+  const navigate = useNavigate();
+  
   const handlePayment = () => {
     
     console.log('Payment processing...');
@@ -19,7 +22,7 @@ const PaymentScreen = ({ isOpen, onRequestClose , sampleData , startPlace , endP
     },
     content: {
        display: 'flex',
-      width: '60%',
+      width: '63%',
       height:'60%',
       alignItems:'center',
       justifyContent: 'space-between',
@@ -175,10 +178,16 @@ const PaymentScreen = ({ isOpen, onRequestClose , sampleData , startPlace , endP
 </span>
 
         </div>
-
+        <div style={styles.buttoncontainer}>
         <div style={styles.footer}>
       <button  style={styles.bookButton1}>Order Success</button>
+         </div>
+
+    <div style={styles.footer}>
+      <button  onClick={() => {navigate('/orderHistory')}} style={styles.bookButton}>View Orders</button>
     </div>
+        </div>
+        
    
     </div>
 
@@ -204,7 +213,10 @@ const styles = {
     flex: '0 0 75%',
     marginRight: '20px', 
   },
-  
+  buttoncontainer:{
+    display:'flex',
+    flexDirection:'row'
+  },
   rightColumn: {
     flex: '0 0 25%',
     justifyContent: 'center',
@@ -254,19 +266,18 @@ const styles = {
     padding: '10px 20px',
     borderRadius: '5px',
     cursor: 'pointer',
-    margin:'0 auto',
+    margin:'5px auto',
     width:'90%',
     
   },
   bookButton1: {
     backgroundColor: 'green',
-    
     color: '#ffffff',
     border: 'none',
     padding: '10px 20px',
     borderRadius: '5px',
     cursor: 'pointer',
-    margin:'10px auto',
+    margin:'5px auto',
     width:'90%',
     
   },

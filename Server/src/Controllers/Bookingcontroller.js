@@ -147,10 +147,11 @@ const cancelBooking = async (req, res) => {
   
   const getAllBookingsByUserId = async (req, res) => {
     try {
-      const { userId } = req.params;
+      const userId = req.userId;
+
   
 
-      const bookings = await Booking.find({ userId });
+      const bookings = await Booking.find({ userId }).populate('trainId');
   
      
       if (!bookings || bookings.length === 0) {

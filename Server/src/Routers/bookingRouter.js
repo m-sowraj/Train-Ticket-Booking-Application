@@ -8,7 +8,7 @@ const authenticateToken = require('../Middleware/authenticateToken');
 // Route to book tickets
 router.post('/', authenticateToken , bookTicket);
 router.post('/cancel/:bookingId', cancelBooking);
-router.get('/:userId', getAllBookingsByUserId);
+router.get('/history',  authenticateToken ,getAllBookingsByUserId);
 
 
 module.exports = router;

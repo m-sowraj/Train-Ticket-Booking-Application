@@ -4,6 +4,7 @@ import BookingScreen from './screens/bookticket';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import AuthModal from './components/Authmodal';
 import Modal from 'react-modal';
+import OrderHistory from './screens/OrderHistory';
 
 Modal.setAppElement('#root');
 
@@ -37,6 +38,8 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/train/:id" element={<BookingScreen />} />
+          <Route path="/OrderHistory" element={<OrderHistory />} />
+
         </Routes>
       </Router>
     </div>

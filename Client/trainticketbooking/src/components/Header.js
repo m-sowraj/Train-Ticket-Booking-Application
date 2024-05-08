@@ -1,11 +1,14 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
+  const navigate = useNavigate();
+
   return (
     <div style={styles.container}>
       <h2 style={styles.heading}>TrainTickets</h2>
-{/*            
-      <button style={styles.getStartedButton}>Login / Signup</button> */}
+           
+      <button onClick={() => {navigate('/orderHistory')}} style={styles.getStartedButton}>Order History</button>
     </div>
   );
 };
