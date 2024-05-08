@@ -92,7 +92,7 @@ const bookTicket = async (req, res) => {
 
       res.status(201).json({ booking, bookedSeats: bookedSeatNumbers, totalAmount });
     } else {
-      res.status(400).json({ error: 'Insufficient continuous seats available' });
+      res.status(220).json({ error: 'Insufficient continuous seats available' });
     }
   } catch (error) {
     console.error('Error booking ticket:', error.message);

@@ -1,15 +1,39 @@
 import React, { useState ,useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import api from '../api';
+import PaymentScreen from '../components/Paymentscreen';
+import Header from '../components/Header';
 
 const BookingScreen = () => {
+  const { id } = useParams();
+ 
   const [startPlace, setStartPlace] = useState('');
   const [endPlace, setEndPlace] = useState('');
-  const [compartmentType, setCompartmentType] = useState('');
   const [numberOfTickets, setNumberOfTickets] = useState(1);
   const [selectedCompartment, setSelectedCompartment] = useState('');
   const [totalAmount, setTotalAmount] = useState(0);
+  const [loading, setLoading] = useState(true)
+  const [sampleData, setSampleData] = useState(null);
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+  const [seats, setSeats] = useState([]);
+
+  
+  useEffect(() => {
+    api.get(`/schedules/${id}`)
+        .then(response => {
+            setSampleData(response.data.schedule);
+
+            setLoading(false); 
+        })
+        .catch(error => {
+            console.error('Error fetching sample data:', error);
+            setLoading(false); 
+        });
+}, []);
   
   useEffect(() => {
     const calculateTotalAmount = () => {
+      
       const startStop = sampleData.stops.find(stop => stop.station === startPlace);
       const endStop = sampleData.stops.find(stop => stop.station === endPlace);
 
@@ -24,66 +48,136 @@ const BookingScreen = () => {
         }
       }
     };
-
-    calculateTotalAmount();
+    if(sampleData != null){
+      calculateTotalAmount();
+    }
+    
   }, [startPlace, endPlace, selectedCompartment]);
 
   
-  const sampleData =  {
-    trainId: {
-      trainNumber: "12345",
-      trainName: "Express Train",
-      source: "City A",
-      destination: "City B",
-      departureTime: new Date("2024-05-10T08:00:00"),
-      arrivalTime: new Date("2024-05-10T12:00:00"),
-      totalSeats: 100,
-      compartments: [
-        { type: "AC 1", seats: 50, farePerKm: 1.5, bookedSeats: [] },
-        { type: "Sleeper 1", seats: 50, farePerKm: 1, bookedSeats: [] },
-        { type: "AC 2", seats: 50, farePerKm: 1.5, bookedSeats: [] },
-        { type: "Sleeper 2", seats: 50, farePerKm: 1, bookedSeats: [] },
-        { type: "AC 3", seats: 50, farePerKm: 1.5, bookedSeats: [] },
-        { type: "Sleeper 3", seats: 50, farePerKm: 1, bookedSeats: [] },
-        { type: "AC 4", seats: 50, farePerKm: 1.5, bookedSeats: [] },
-        { type: "Sleeper 4", seats: 50, farePerKm: 1, bookedSeats: [] },
+  // const sampleData =  {
+  //   trainId: {
+  //     trainNumber: "12345",
+  //     trainName: "Express Train",
+  //     source: "City A",
+  //     destination: "City B",
+  //     departureTime: new Date("2024-05-10T08:00:00"),
+  //     arrivalTime: new Date("2024-05-10T12:00:00"),
+  //     totalSeats: 100,
+  //     compartments: [
+  //       { type: "AC 1", seats: 50, farePerKm: 1.5, bookedSeats: [] },
+  //       { type: "Sleeper 1", seats: 50, farePerKm: 1, bookedSeats: [] },
+  //       { type: "AC 2", seats: 50, farePerKm: 1.5, bookedSeats: [] },
+  //       { type: "Sleeper 2", seats: 50, farePerKm: 1, bookedSeats: [] },
+  //       { type: "AC 3", seats: 50, farePerKm: 1.5, bookedSeats: [] },
+  //       { type: "Sleeper 3", seats: 50, farePerKm: 1, bookedSeats: [] },
+  //       { type: "AC 4", seats: 50, farePerKm: 1.5, bookedSeats: [] },
+  //       { type: "Sleeper 4", seats: 50, farePerKm: 1, bookedSeats: [] },
       
-      ]
-    }, 
-    date: new Date("2024-05-10"),
-    stops: [
-      {
-        stopNo: 1,
-        station: "Station A",
-        arrivalTime: new Date("2024-05-10T08:00:00"),
-        departureTime: new Date("2024-05-10T08:10:00"),
-        distanceFromFirst: 0
-      },
-      {
-        stopNo: 2,
-        station: "Station B",
-        arrivalTime: new Date("2024-05-10T09:00:00"),
-        departureTime: new Date("2024-05-10T09:10:00"),
-        distanceFromFirst: 50
-      },
-      {
-        stopNo: 3,
-        station: "Station C",
-        arrivalTime: new Date("2024-05-10T09:00:00"),
-        departureTime: new Date("2024-05-10T09:10:00"),
-        distanceFromFirst: 100
-      },
+  //     ]
+  //   }, 
+  //   date: new Date("2024-05-10"),
+  //   stops: [
+  //     {
+  //       stopNo: 1,
+  //       station: "Station A",
+  //       arrivalTime: new Date("2024-05-10T08:00:00"),
+  //       departureTime: new Date("2024-05-10T08:10:00"),
+  //       distanceFromFirst: 0
+  //     },
+  //     {
+  //       stopNo: 2,
+  //       station: "Station B",
+  //       arrivalTime: new Date("2024-05-10T09:00:00"),
+  //       departureTime: new Date("2024-05-10T09:10:00"),
+  //       distanceFromFirst: 50
+  //     },
+  //     {
+  //       stopNo: 3,
+  //       station: "Station C",
+  //       arrivalTime: new Date("2024-05-10T09:00:00"),
+  //       departureTime: new Date("2024-05-10T09:10:00"),
+  //       distanceFromFirst: 100
+  //     },
       
-    ]
-  }
+  //   ]
+  // }
 
-  const handleBooking = () => {
-    
-    console.log('Booking tickets...');
+  const openPaymentModal = () => {
+    setIsPaymentModalOpen(true);
   };
 
+  const closePaymentModal = () => {
+    setIsPaymentModalOpen(false);
+  };
+
+  const anyItemsAreNull = () => {
+    // Check if any of the items are null
+    return (
+      startPlace === '' ||
+      endPlace === '' ||
+      selectedCompartment === '' ||
+      totalAmount === 0 ||
+      // Add any other items you want to check for null
+      sampleData === null // Check sampleData as well if it should not be null
+    );
+  };
+
+  
+
+  const handleBooking = () => {
+
+    if (anyItemsAreNull()) {
+      alert('Fill Details')
+       return;
+     }
+    const bookingData = {
+        trainId: sampleData.trainId._id,
+        startStation : startPlace,
+        endStation: endPlace,
+        numSeats: numberOfTickets,
+        compartmentType: selectedCompartment,
+        totalAmount: totalAmount,
+        scheduleId: sampleData._id,
+        userId:"6639d318490a67301d3f3419",
+    };
+
+    api.post('/bookings', bookingData)
+        .then(response => {
+            console.log('Booking successful:', response.data);
+            if(response.status == 220){
+              alert('Insufficient continuous seats available')
+            }
+            else if(response.status == 201){
+              console.log(response.data.bookedSeats)
+              setSeats(response.data.bookedSeats)
+              openPaymentModal();
+
+            }
+            
+            
+        })
+        .catch(error => {
+            console.error('Booking failed:', error);
+        });
+};
+
+
   return (
+ 
    <>
+
+{loading ? (
+      <div style={styles.loader}>
+                <l-dot-stream
+                size="300"
+                speed="2.5" 
+                color="black" 
+              ></l-dot-stream>
+              </div>
+            ) : (
+              <>
+                 
     <div style={styles.maincontainer}>
     <div style={styles.leftColumn}>
     <div style={styles.container}>
@@ -141,7 +235,19 @@ const BookingScreen = () => {
       </div> */}
     </div>
 
-   
+    {/* <PaymentScreen isOpen={isPaymentModalOpen} onRequestClose={closePaymentModal} sampleData={sampleData} startPlace endPlace numberOfTickets selectedCompartment totalAmount numberOfTickets={numberOfTickets} /> */}
+    <PaymentScreen 
+  isOpen={isPaymentModalOpen} 
+  onRequestClose={closePaymentModal} 
+  sampleData={sampleData} 
+  startPlace={startPlace} 
+  endPlace={endPlace}
+  numberOfTickets={numberOfTickets} 
+  selectedCompartment={selectedCompartment} 
+  totalAmount={totalAmount} 
+  seats={seats}
+/>
+
     <div style={styles.Compartments}>
       <h2>Choose Compartment</h2>
       
@@ -186,7 +292,8 @@ const BookingScreen = () => {
             <strong>Total Amount:</strong>
             <span style={styles.value}>₹{totalAmount * numberOfTickets}</span>
         </div>
-        <div style={styles.footer}>
+        
+    <div style={styles.footer}>
       <button onClick={handleBooking} style={styles.bookButton}>Check Out</button>
     </div>
     </div>
@@ -196,23 +303,29 @@ const BookingScreen = () => {
 
     </div>
   </>
+            )}
+              </>
   );
+  
 };
 
 export default BookingScreen;
 
 const styles = {
   maincontainer:{
+    
     display: 'flex',
     flexDirection: 'row',
    
   },
   leftColumn: {
+    
     flex: '0 0 75%',
     marginRight: '20px', 
   },
   
   rightColumn: {
+    
     flex: '0 0 23%',
     justifyContent: 'center',
     alignItems: 'center', 

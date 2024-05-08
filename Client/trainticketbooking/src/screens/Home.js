@@ -1,156 +1,174 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-
+import { dotStream } from 'ldrs'
 import { useNavigate } from 'react-router-dom';
+import api from '../api';
+dotStream.register()
 
 const Home = () => {
     
     const navigate = useNavigate();
-    const sampleData = [
-        {
-          trainId: {
-            trainNumber: "12345",
-            trainName: "Express Train",
-            source: "City A",
-            destination: "City B",
-            departureTime: new Date("2024-05-10T08:00:00"),
-            arrivalTime: new Date("2024-05-10T12:00:00"),
-            totalSeats: 100,
-            compartments: [
-              { type: "AC", seats: 50, farePerKm: 1.5, bookedSeats: [] },
-              { type: "Sleeper", seats: 50, farePerKm: 1, bookedSeats: [] }
-            ]
-          }, 
-          date: new Date("2024-05-10"),
-          stops: [
-            {
-              stopNo: 1,
-              station: "Station A",
-              arrivalTime: new Date("2024-05-10T08:00:00"),
-              departureTime: new Date("2024-05-10T08:10:00"),
-              distanceFromFirst: 0
-            },
-            {
-              stopNo: 2,
-              station: "Station B",
-              arrivalTime: new Date("2024-05-10T09:00:00"),
-              departureTime: new Date("2024-05-10T09:10:00"),
-              distanceFromFirst: 50
-            },
+    const [loading, setLoading] = useState(true)
+    const [sampleData, setSampleData] = useState([]);
+    // const sampleData = [
+    //     {
+    //       trainId: {
+    //         trainNumber: "12345",
+    //         trainName: "Express Train",
+    //         source: "City A",
+    //         destination: "City B",
+    //         departureTime: new Date("2024-05-10T08:00:00"),
+    //         arrivalTime: new Date("2024-05-10T12:00:00"),
+    //         totalSeats: 100,
+    //         compartments: [
+    //           { type: "AC", seats: 50, farePerKm: 1.5, bookedSeats: [] },
+    //           { type: "Sleeper", seats: 50, farePerKm: 1, bookedSeats: [] }
+    //         ]
+    //       }, 
+    //       date: new Date("2024-05-10"),
+    //       stops: [
+    //         {
+    //           stopNo: 1,
+    //           station: "Station A",
+    //           arrivalTime: new Date("2024-05-10T08:00:00"),
+    //           departureTime: new Date("2024-05-10T08:10:00"),
+    //           distanceFromFirst: 0
+    //         },
+    //         {
+    //           stopNo: 2,
+    //           station: "Station B",
+    //           arrivalTime: new Date("2024-05-10T09:00:00"),
+    //           departureTime: new Date("2024-05-10T09:10:00"),
+    //           distanceFromFirst: 50
+    //         },
             
-          ]
-        },
-        {
-          trainId: {
-            trainNumber: "12345",
-            trainName: "Express Train",
-            source: "City A",
-            destination: "City B",
-            departureTime: new Date("2024-05-10T08:00:00"),
-            arrivalTime: new Date("2024-05-10T12:00:00"),
-            totalSeats: 100,
-            compartments: [
-              { type: "AC", seats: 50, farePerKm: 1.5, bookedSeats: [] },
-              { type: "Sleeper", seats: 50, farePerKm: 1, bookedSeats: [] }
-            ]
-          },
-          date: new Date("2024-05-11"),
-          stops: [
-            {
-              stopNo: 1,
-              station: "Station C",
-              arrivalTime: new Date("2024-05-11T08:00:00"),
-              departureTime: new Date("2024-05-11T08:10:00"),
-              distanceFromFirst: 0
-            },
-            {
-              stopNo: 2,
-              station: "Station D",
-              arrivalTime: new Date("2024-05-11T09:00:00"),
-              departureTime: new Date("2024-05-11T09:10:00"),
-              distanceFromFirst: 80 
-                        },
+    //       ]
+    //     },
+    //     {
+    //       trainId: {
+    //         trainNumber: "12345",
+    //         trainName: "Express Train",
+    //         source: "City A",
+    //         destination: "City B",
+    //         departureTime: new Date("2024-05-10T08:00:00"),
+    //         arrivalTime: new Date("2024-05-10T12:00:00"),
+    //         totalSeats: 100,
+    //         compartments: [
+    //           { type: "AC", seats: 50, farePerKm: 1.5, bookedSeats: [] },
+    //           { type: "Sleeper", seats: 50, farePerKm: 1, bookedSeats: [] }
+    //         ]
+    //       },
+    //       date: new Date("2024-05-11"),
+    //       stops: [
+    //         {
+    //           stopNo: 1,
+    //           station: "Station C",
+    //           arrivalTime: new Date("2024-05-11T08:00:00"),
+    //           departureTime: new Date("2024-05-11T08:10:00"),
+    //           distanceFromFirst: 0
+    //         },
+    //         {
+    //           stopNo: 2,
+    //           station: "Station D",
+    //           arrivalTime: new Date("2024-05-11T09:00:00"),
+    //           departureTime: new Date("2024-05-11T09:10:00"),
+    //           distanceFromFirst: 80 
+    //                     },
             
-          ]
-        },
-        {
-          trainId: {
-            trainNumber: "12345",
-            trainName: "Express Train",
-            source: "City A",
-            destination: "City B",
-            departureTime: new Date("2024-05-10T08:00:00"),
-            arrivalTime: new Date("2024-05-10T12:00:00"),
-            totalSeats: 100,
-            compartments: [
-              { type: "AC", seats: 50, farePerKm: 1.5, bookedSeats: [] },
-              { type: "Sleeper", seats: 50, farePerKm: 1, bookedSeats: [] }
-            ]
-          },
-          date: new Date("2024-05-12"),
-          stops: [
-            {
-              stopNo: 1,
-              station: "Station E",
-              arrivalTime: new Date("2024-05-12T08:00:00"),
-              departureTime: new Date("2024-05-12T08:10:00"),
-              distanceFromFirst: 0
-            },
-            {
-              stopNo: 2,
-              station: "Station F",
-              arrivalTime: new Date("2024-05-12T09:00:00"),
-              departureTime: new Date("2024-05-12T09:10:00"),
-              distanceFromFirst: 70 
-            },
+    //       ]
+    //     },
+    //     {
+    //       trainId: {
+    //         trainNumber: "12345",
+    //         trainName: "Express Train",
+    //         source: "City A",
+    //         destination: "City B",
+    //         departureTime: new Date("2024-05-10T08:00:00"),
+    //         arrivalTime: new Date("2024-05-10T12:00:00"),
+    //         totalSeats: 100,
+    //         compartments: [
+    //           { type: "AC", seats: 50, farePerKm: 1.5, bookedSeats: [] },
+    //           { type: "Sleeper", seats: 50, farePerKm: 1, bookedSeats: [] }
+    //         ]
+    //       },
+    //       date: new Date("2024-05-12"),
+    //       stops: [
+    //         {
+    //           stopNo: 1,
+    //           station: "Station E",
+    //           arrivalTime: new Date("2024-05-12T08:00:00"),
+    //           departureTime: new Date("2024-05-12T08:10:00"),
+    //           distanceFromFirst: 0
+    //         },
+    //         {
+    //           stopNo: 2,
+    //           station: "Station F",
+    //           arrivalTime: new Date("2024-05-12T09:00:00"),
+    //           departureTime: new Date("2024-05-12T09:10:00"),
+    //           distanceFromFirst: 70 
+    //         },
            
-          ]
-        },
-        {
-            trainId:{
-                trainNumber: "12345",
-                trainName: "Express Train",
-                source: "City A",
-                destination: "City B",
-                departureTime: new Date("2024-05-10T08:00:00"),
-                arrivalTime: new Date("2024-05-10T12:00:00"),
-                totalSeats: 100,
-                compartments: [
-                  { type: "AC", seats: 50, farePerKm: 1.5, bookedSeats: [] },
-                  { type: "Sleeper", seats: 50, farePerKm: 1, bookedSeats: [] }
-                ]
-              },
-            date: new Date("2024-05-12"),
-            stops: [
-              {
-                stopNo: 1,
-                station: "Station G",
-                arrivalTime: new Date("2024-05-12T08:00:00"),
-                departureTime: new Date("2024-05-12T08:10:00"),
-                distanceFromFirst: 0
-              },
-              {
-                stopNo: 2,
-                station: "Station H",
-                arrivalTime: new Date("2024-05-12T09:00:00"),
-                departureTime: new Date("2024-05-12T09:10:00"),
-                distanceFromFirst: 70 
-              },
-              {
-                stopNo: 3,
-                station: "Station I",
-                arrivalTime: new Date("2024-05-12T09:00:00"),
-                departureTime: new Date("2024-05-12T09:10:00"),
-                distanceFromFirst: 70 
-              },
+    //       ]
+    //     },
+    //     {
+    //         trainId:{
+    //             trainNumber: "12345",
+    //             trainName: "Express Train",
+    //             source: "City A",
+    //             destination: "City B",
+    //             departureTime: new Date("2024-05-10T08:00:00"),
+    //             arrivalTime: new Date("2024-05-10T12:00:00"),
+    //             totalSeats: 100,
+    //             compartments: [
+    //               { type: "AC", seats: 50, farePerKm: 1.5, bookedSeats: [] },
+    //               { type: "Sleeper", seats: 50, farePerKm: 1, bookedSeats: [] }
+    //             ]
+    //           },
+    //         date: new Date("2024-05-12"),
+    //         stops: [
+    //           {
+    //             stopNo: 1,
+    //             station: "Station G",
+    //             arrivalTime: new Date("2024-05-12T08:00:00"),
+    //             departureTime: new Date("2024-05-12T08:10:00"),
+    //             distanceFromFirst: 0
+    //           },
+    //           {
+    //             stopNo: 2,
+    //             station: "Station H",
+    //             arrivalTime: new Date("2024-05-12T09:00:00"),
+    //             departureTime: new Date("2024-05-12T09:10:00"),
+    //             distanceFromFirst: 70 
+    //           },
+    //           {
+    //             stopNo: 3,
+    //             station: "Station I",
+    //             arrivalTime: new Date("2024-05-12T09:00:00"),
+    //             departureTime: new Date("2024-05-12T09:10:00"),
+    //             distanceFromFirst: 70 
+    //           },
              
-            ]
-          },
-      ];
+    //         ]
+    //       },
+    //   ];
+      
+      useEffect(() => {
+        api.get('/schedules')
+            .then(response => {
+                setSampleData(response.data.schedules);
+                setFilteredItems(response.data.schedules)
+                // console.log(response.data.schedules)
+                setLoading(false); 
+            })
+            .catch(error => {
+                console.error('Error fetching sample data:', error);
+                setLoading(false); 
+            });
+    }, []);
 
-      const allStations =  Array.from(new Set(sampleData.flatMap(schedule => schedule.stops.map(stop => stop.station))));
-
+    const allStations =  Array.from(new Set(sampleData.flatMap(schedule => schedule.stops.map(stop => stop.station))));
+    console.log(allStations)
       const allfromStations = Array.from(new Set(
         sampleData.flatMap(schedule =>
           schedule.stops.slice(0, -1).map(stop => stop.station)
@@ -244,7 +262,19 @@ const Home = () => {
 
   return (
     <>
-    <Header />
+
+
+    {loading ? (
+      <div style={styles.loader}>
+                <l-dot-stream
+                size="300"
+                speed="2.5" 
+                color="black" 
+              ></l-dot-stream>
+              </div>
+            ) : (
+              <>
+                  <Header />
     <div style={styles.container}>
 
       <h2 style={styles.heading}>Find the perfect train for your journey</h2>
@@ -268,7 +298,7 @@ const Home = () => {
       </div>
       <div style={styles.itemscontainer} >
         {filteredItems.map((schedule, index) => (
-          <div key={index} style={styles.scheduleItem} onClick={() => navigate(`/train`) }>
+          <div key={index} style={styles.scheduleItem} onClick={() => navigate(`/train/${schedule._id}`) }>
             <h3>{schedule.trainId.trainNumber} - {schedule.trainId.trainName}</h3>
         
             {/* <h4>Stops:</h4>
@@ -280,12 +310,15 @@ const Home = () => {
               ))}
             </ul> */}
             <p>{schedule.trainId.source} to {schedule.trainId.destination}</p>
-            <p>{schedule.trainId.departureTime.toLocaleDateString()} {schedule.trainId.departureTime.toLocaleTimeString()} - {schedule.trainId.arrivalTime.toLocaleDateString()}{schedule.trainId.arrivalTime.toLocaleTimeString()}</p>
+            {/* <p>{schedule.trainId.departureTime.toLocaleDateString()} {schedule.trainId.departureTime.toLocaleTimeString()} - {schedule.trainId.arrivalTime.toLocaleDateString()}{schedule.trainId.arrivalTime.toLocaleTimeString()}</p> */}
           </div>
         ))}
-      </div>
-
+      </div> 
       <Footer />
+      </>
+            )}
+
+ 
     
     
     </>
@@ -307,6 +340,19 @@ const styles = {
     width: '60%', 
     marginTop: '10%'
   },
+  loader: {
+    position: 'fixed',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    zIndex: 9999,
+    alignItems:'center',
+    justifyContent:'center',
+    textAlign: 'center',
+    color: '#fff',
+    fontSize: '20px',
+    padding: '20px',
+},
   txt: {
     textAlign: 'center',
     fontSize: '20px',
